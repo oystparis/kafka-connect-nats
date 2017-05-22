@@ -134,7 +134,7 @@
                             <failOnViolation>true</failOnViolation>
                             <consoleOutput>true</consoleOutput>
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                            <configLocation>${project.basedir}/config/checkstyle.xml</configLocation>
+                            <configLocation>${project.basedir}/src/checkstyle/checks.xml</configLocation>
                             <sourceDirectories>
                                 <directory>${project.build.sourceDirectory}</directory>
                             </sourceDirectories>
@@ -164,38 +164,9 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.17</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                        <configuration>
-                            <failOnViolation>true</failOnViolation>
-                            <consoleOutput>true</consoleOutput>
-                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                            <configLocation>${project.basedir}/src/checkstyle/checks.xml</configLocation>
-                            <sourceDirectories>
-                                <directory>${project.build.sourceDirectory}</directory>
-                            </sourceDirectories>
-                            <testSourceDirectories>
-                                <directory>${project.build.testSourceDirectory}</directory>
-                            </testSourceDirectories>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>7.3</version>
-                    </dependency>
-                </dependencies>
+                <configuration>
+                	<basedir>${project.build.sourceDirectory}</basedir>
+                </configuration>
             </plugin>
         </plugins>
     </build>
