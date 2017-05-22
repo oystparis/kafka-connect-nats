@@ -164,6 +164,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                	<basedir>${project.build.sourceDirectory}</basedir>
+                </configuration>
             </plugin>
         </plugins>
     </build>
