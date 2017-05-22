@@ -19,12 +19,18 @@
 package com.oyst.kafka.connect.nats.source;
 
 public class NatsSourceConnectorConstants {
-  // Constants
+  // Record Schema Constants
+  public static String SCHEMA_RECORD_NAME = "NATS_MESSAGE";
+  public static String SCHEMA_RECORD_QUEUE_GROUP_NAME = "RECORD_QUEUE_GROUP";
+  public static String SCHEMA_RECORD_INBOX_NAME = "RECORD_REPLY_TO";
+  public static String SCHEMA_RECORD_PAYLOAD_NAME = "RECORD_PAYLOAD";
+
+  // Connector Constants
   public static final String KAFKA_TOPIC = "topic";
   public static final String NATS_SUBJECT = "nats.subject";
   public static final String NATS_HOST = "nats.host";
 
-  // Constants Doc
+  // Connector Constants Docs
   public static final String KAFKA_TOPIC_DOC = "Kafka topic to put received data";
   public static final String NATS_SUBJECT_DOC = "The NATS SUBJECT";
   public static final String NATS_HOST_DOC = "THE NATS HOST";
