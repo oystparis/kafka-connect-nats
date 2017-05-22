@@ -1,2 +1,29 @@
 # kafka-connect-nats
-Kafka Connect NATS connector
+Kafka Connect NATS connector is used to load data from NATS to KAFKA.
+
+# Building
+You can build the connector with Maven using the standard lifecycle phases:
+```
+mvn clean
+mvn package
+```
+
+# Source Connector
+
+## Sample Configuration
+
+```ini
+name=nats_source
+connector.class=com.oyst.kafka.connect.nats.NatsSourceConnector
+tasks.max=1
+topic=NATS-TOPIC
+nats.subject=NATS-SUBJECT
+nats.host=nats://localhost:4222
+```
+
+* **name**: Name of the connector
+* **connector.class**: Class of the implementation of the connector
+* **tasks.max**: Maximum number of tasks to create
+* **topic**: The destination Kafka's Topic Name
+* **nats.subject**: The name of NATS Subject
+* **nats.host**: URI of NATS server
