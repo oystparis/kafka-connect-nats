@@ -22,6 +22,7 @@ import io.nats.client.Connection;
 import io.nats.client.Nats;
 import org.apache.kafka.common.utils.AppInfoParser;
 import org.apache.kafka.connect.data.Schema;
+import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -55,9 +57,18 @@ public class NatsSourceTask extends SourceTask {
 
     this.nc.subscribe(nsubject, message -> {
       LOG.info("Sending the next message : {}", message);
-      SourceRecord sc = new SourceRecord(null,null,
-              ktopic ,Schema.STRING_SCHEMA, message.getSubject(),
-              Schema.BYTES_SCHEMA, message.getData());
+      Schema schemaMessage = NatsSourceConverter.getRecordSchema();
+      Struct record = NatsSourceConverter.getRecordStruct(schemaMessage,
+              message.getSubscription().getQueue(),
+              message.getReplyTo(),
+              new String(message.getData()));
+      SourceRecord sc = new SourceRecord(
+              getPartitionName(message.getSubject()),
+              null,
+              ktopic ,
+              schemaMessage,
+              record);
+      LOG.info("Adding the next Source Record : {}", sc);
       mQueue.add(sc);
     });
   }
@@ -78,5 +89,9 @@ public class NatsSourceTask extends SourceTask {
 
   public String version() {
     return AppInfoParser.getVersion();
+  }
+
+  public Map<String, String> getPartitionName(String subject){
+    return Collections.singletonMap("PartitionName", subject);
   }
 }
