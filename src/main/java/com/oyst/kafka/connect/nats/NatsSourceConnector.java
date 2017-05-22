@@ -1,5 +1,7 @@
 package com.oyst.kafka.connect.nats;
 
+import com.oyst.kafka.connect.nats.source.NatsSourceConnectorConfig;
+import com.oyst.kafka.connect.nats.source.NatsSourceTask;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.source.SourceConnector;
