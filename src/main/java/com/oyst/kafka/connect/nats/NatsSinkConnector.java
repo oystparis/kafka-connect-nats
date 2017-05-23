@@ -23,25 +23,37 @@ import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.utils.AppInfoParser;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.sink.SinkConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class NatsSinkConnector extends SinkConnector {
+  private static final Logger LOG = LoggerFactory.getLogger(NatsSourceConnector.class);
+  private Map<String, String> mConfigProperties;
 
   @Override
-  public void start(Map<String, String> map) {
-
+  public void start(Map<String, String> props) {
+    LOG.info("Start the NATS Sink Connector with the next properties : {}", props);
+    this.mConfigProperties = props;
   }
 
   @Override
   public void stop() {
-
+    LOG.info("Stop the Nats Sink Connector");
   }
 
   @Override
-  public List<Map<String, String>> taskConfigs(int i) {
-    return null;
+  public List<Map<String, String>> taskConfigs(int capacity) {
+    List<Map<String, String>> taskConfigs = new ArrayList<>(capacity);
+    Map<String, String> taskProps = new HashMap<>(mConfigProperties);
+    for (int i = 0; i < capacity; i++){
+      taskConfigs.add(taskProps);
+    }
+    return taskConfigs;
   }
 
   @Override

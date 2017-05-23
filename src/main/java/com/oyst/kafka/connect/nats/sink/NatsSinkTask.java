@@ -40,6 +40,7 @@ import static com.oyst.kafka.connect.nats.sink.NatsSinkConnectorConstants.NATS_U
 public class NatsSinkTask extends SinkTask {
   private static final Logger LOG = LoggerFactory.getLogger(NatsSinkTask.class);
   private Connection nc;
+
   @Override
   public void start(Map<String, String> map) {
     LOG.info("Start the Nats Sink Task");
@@ -88,7 +89,7 @@ public class NatsSinkTask extends SinkTask {
 
   @Override
   public void flush(Map<TopicPartition, OffsetAndMetadata> map) {
-
+    // todo
   }
 
   @Override

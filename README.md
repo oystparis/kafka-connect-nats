@@ -33,3 +33,21 @@ nats.url=nats://localhost:4222,localhost:4223
 * **nats.subject**: The name of NATS Subject
 * **nats.url**: URI of NATS server(s)
 * **nats.queue.group**: Name of NATS Queue Group
+
+# Sink Connector
+
+## Sample Configuration
+
+```ini
+name=nats_sink
+connector.class=com.oyst.kafka.connect.nats.NatsSinkConnector
+tasks.max=1
+topic=NATS-TOPIC
+nats.url=nats://localhost:4222
+```
+
+* **name**: Name of the connector
+* **connector.class**: Class of the implementation of the connector
+* **tasks.max**: Maximum number of tasks to create
+* **topic**: The destination Kafka's Topic Name
+* **nats.url**: URI of NATS server(s)
