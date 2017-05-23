@@ -19,6 +19,7 @@ tasks.max=1
 topic=NATS-TOPIC
 nats.subject=NATS-SUBJECT
 nats.host=nats://localhost:4222
+nats.queue.group=nats-queue
 ```
 
 * **name**: Name of the connector
@@ -27,3 +28,4 @@ nats.host=nats://localhost:4222
 * **topic**: The destination Kafka's Topic Name
 * **nats.subject**: The name of NATS Subject
 * **nats.host**: URI of NATS server
+* **nats.queue.group**: Name of NATS Queue Group

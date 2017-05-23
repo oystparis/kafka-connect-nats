@@ -41,6 +41,8 @@ public class NatsSourceConnectorConfig extends AbstractConfig {
                     Importance.LOW, NatsSourceConnectorConstants.KAFKA_TOPIC_DOC)
             .define(NatsSourceConnectorConstants.NATS_SUBJECT, Type.STRING, null,
                     Importance.MEDIUM, NatsSourceConnectorConstants.NATS_SUBJECT_DOC)
+            .define(NatsSourceConnectorConstants.NATS_QUEUE_GROUP, Type.STRING, "nats-kafka",
+                    Importance.LOW, NatsSourceConnectorConstants.NATS_QUEUE_GROUP_DOC)
             .define(NatsSourceConnectorConstants.NATS_HOST, Type.STRING, "nats://localhost:4222",
                     Importance.HIGH, NatsSourceConnectorConstants.NATS_HOST_DOC);
   }
