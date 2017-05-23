@@ -45,6 +45,7 @@ public class NatsSourceTask extends SourceTask {
     LOG.info("Start the Nats Source Task");
     String nsubject = map.get(NatsSourceConnectorConstants.NATS_SUBJECT);
     String nhost = map.get(NatsSourceConnectorConstants.NATS_HOST);
+    String nQueueGroup = map.get(NatsSourceConnectorConstants.NATS_QUEUE_GROUP);
     this.ktopic = map.get(NatsSourceConnectorConstants.KAFKA_TOPIC);
     try {
       this.nc = Nats.connect(nhost);
@@ -53,11 +54,11 @@ public class NatsSourceTask extends SourceTask {
       e.printStackTrace();
     }
 
-    this.nc.subscribe(nsubject, message -> {
+    this.nc.subscribe(nsubject, nQueueGroup, message -> {
       LOG.info("Sending the next message : {}", message);
       SourceRecord sc = new SourceRecord(null,null,
               ktopic ,Schema.STRING_SCHEMA, message.getSubject(),
-              Schema.BYTES_SCHEMA, message.getData());
+              Schema.STRING_SCHEMA, new String(message.getData()));
       mQueue.add(sc);
     });
   }
