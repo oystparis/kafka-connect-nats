@@ -23,6 +23,8 @@ import io.nats.client.ConnectionFactory;
 import io.nats.client.Nats;
 import org.apache.kafka.common.utils.AppInfoParser;
 import org.apache.kafka.connect.data.Schema;
+import org.apache.kafka.connect.data.Struct;
+import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
@@ -35,6 +37,11 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_SUBJECT;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_URL;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_QUEUE_GROUP;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.KAFKA_TOPIC;
+
 public class NatsSourceTask extends SourceTask {
   private static final Logger LOG = LoggerFactory.getLogger(NatsSourceTask.class);
   private Connection nc;
@@ -44,14 +51,14 @@ public class NatsSourceTask extends SourceTask {
   @Override
   public void start(Map<String, String> map) {
     LOG.info("Start the Nats Source Task");
-    String nsubject = map.get(NatsSourceConnectorConstants.NATS_SUBJECT);
-    String[] nhost = map.get(NatsSourceConnectorConstants.NATS_URL).split(",");
-    String nQueueGroup = map.get(NatsSourceConnectorConstants.NATS_QUEUE_GROUP);
-    this.ktopic = map.get(NatsSourceConnectorConstants.KAFKA_TOPIC);
+    String nsubject = map.get(NATS_SUBJECT);
+    String[] nhost = map.get(NATS_URL).split(",");
+    String nQueueGroup = map.get(NATS_QUEUE_GROUP);
+    this.ktopic = map.get(KAFKA_TOPIC);
     try {
       if (nhost.length == 1)
         this.nc = Nats.connect(nhost[0]);
-      else{
+      else if (nhost.length >= 2){
         ConnectionFactory cf = new ConnectionFactory();
         cf.setServers(nhost);
         cf.setMaxReconnect(5);
@@ -59,16 +66,21 @@ public class NatsSourceTask extends SourceTask {
         cf.setNoRandomize(true);
         this.nc = cf.createConnection();
       }
+      else
+        throw new ConnectException("No NATS URL");
       LOG.info("Connected to the next NATS URL(master) : " + this.nc.getConnectedUrl());
     } catch (IOException e){
-      LOG.error(e.getMessage(), e);
+      throw new ConnectException(e.getMessage(), e);
     }
 
     this.nc.subscribe(nsubject, nQueueGroup, message -> {
-      LOG.info("Sending the next message : {}", message);
+      LOG.debug("Sending the next message : {}", message);
+      Schema recordSchema = NatsSourceConverter.getRecordSchema();
+      Struct recordStruct = NatsSourceConverter.getRecordStruct(recordSchema, message.getReplyTo(),
+              new String(message.getData()));
       SourceRecord sc = new SourceRecord(null,null,
               ktopic ,Schema.STRING_SCHEMA, message.getSubject(),
-              Schema.STRING_SCHEMA, new String(message.getData()));
+              recordSchema, recordStruct);
       mQueue.add(sc);
     });
   }
