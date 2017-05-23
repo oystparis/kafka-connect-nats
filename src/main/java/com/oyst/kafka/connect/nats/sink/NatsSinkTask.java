@@ -72,18 +72,18 @@ public class NatsSinkTask extends SinkTask {
   public void put(Collection<SinkRecord> collection) {
     List<SinkRecord> records = new ArrayList<>(collection);
     for (int i = 0; i < records.size(); i++) {
-     SinkRecord sinkRecord = records.get(i);
+      SinkRecord sinkRecord = records.get(i);
 
-     StringConverter stringConverter = new StringConverter();
-     String key = new String(stringConverter.fromConnectData(sinkRecord.topic(),
-             sinkRecord.keySchema(), sinkRecord.key()));
-     byte[] value = stringConverter.fromConnectData(sinkRecord.topic(),
-             sinkRecord.valueSchema(), sinkRecord.value());
-     try {
-       this.nc.publish(key, value);
-     } catch (IOException e){
-       LOG.error(e.getMessage(), e);
-     }
+      StringConverter stringConverter = new StringConverter();
+      String key = new String(stringConverter.fromConnectData(sinkRecord.topic(),
+              sinkRecord.keySchema(), sinkRecord.key()));
+      byte[] value = stringConverter.fromConnectData(sinkRecord.topic(),
+              sinkRecord.valueSchema(), sinkRecord.value());
+      try {
+        this.nc.publish(key, value);
+      } catch (IOException e){
+        LOG.error(e.getMessage(), e);
+      }
     }
   }
 

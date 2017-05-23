@@ -36,18 +36,19 @@ nats.url=nats://localhost:4222,localhost:4223
 
 # Sink Connector
 
+Each Key of Kafka's message as considered as a NATS subject and each value as NATS message. 
 ## Sample Configuration
 
 ```ini
 name=nats_sink
 connector.class=com.oyst.kafka.connect.nats.NatsSinkConnector
 tasks.max=1
-topic=NATS-TOPIC
+topic=KAFKA-TOPIC
 nats.url=nats://localhost:4222
 ```
 
 * **name**: Name of the connector
 * **connector.class**: Class of the implementation of the connector
 * **tasks.max**: Maximum number of tasks to create
-* **topic**: The destination Kafka's Topic Name
+* **topic**: The Kafka's Topic to Consume
 * **nats.url**: URI of NATS server(s)
