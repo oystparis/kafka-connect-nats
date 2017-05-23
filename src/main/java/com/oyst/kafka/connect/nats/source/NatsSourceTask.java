@@ -23,6 +23,7 @@ import io.nats.client.ConnectionFactory;
 import io.nats.client.Nats;
 import org.apache.kafka.common.utils.AppInfoParser;
 import org.apache.kafka.connect.data.Schema;
+import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
@@ -66,9 +67,12 @@ public class NatsSourceTask extends SourceTask {
 
     this.nc.subscribe(nsubject, nQueueGroup, message -> {
       LOG.info("Sending the next message : {}", message);
+      Schema recordSchema = NatsSourceConverter.getRecordSchema();
+      Struct recordStruct = NatsSourceConverter.getRecordStruct(recordSchema, message.getReplyTo(),
+              new String(message.getData()));
       SourceRecord sc = new SourceRecord(null,null,
               ktopic ,Schema.STRING_SCHEMA, message.getSubject(),
-              Schema.STRING_SCHEMA, new String(message.getData()));
+              recordSchema, recordStruct);
       mQueue.add(sc);
     });
   }
