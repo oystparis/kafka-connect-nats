@@ -70,12 +70,11 @@ public class NatsSourceTask extends SourceTask {
         throw new ConnectException("No NATS URL");
       LOG.info("Connected to the next NATS URL(master) : " + this.nc.getConnectedUrl());
     } catch (IOException e){
-      LOG.error(e.getMessage(), e);
       throw new ConnectException(e.getMessage(), e);
     }
 
     this.nc.subscribe(nsubject, nQueueGroup, message -> {
-      LOG.info("Sending the next message : {}", message);
+      LOG.debug("Sending the next message : {}", message);
       Schema recordSchema = NatsSourceConverter.getRecordSchema();
       Struct recordStruct = NatsSourceConverter.getRecordStruct(recordSchema, message.getReplyTo(),
               new String(message.getData()));
