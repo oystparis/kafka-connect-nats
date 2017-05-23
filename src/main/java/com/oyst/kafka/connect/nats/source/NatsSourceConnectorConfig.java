@@ -47,7 +47,7 @@ public class NatsSourceConnectorConfig extends AbstractConfig {
     return new ConfigDef()
             .define(KAFKA_TOPIC, Type.STRING, "nats",
                     Importance.LOW, KAFKA_TOPIC_DOC)
-            .define(NATS_SUBJECT, Type.STRING, null,
+            .define(NATS_SUBJECT, Type.STRING, "kafka",
                     Importance.MEDIUM, NATS_SUBJECT_DOC)
             .define(NATS_QUEUE_GROUP, Type.STRING, "nats-kafka",
                     Importance.LOW, NATS_QUEUE_GROUP_DOC)
@@ -56,7 +56,6 @@ public class NatsSourceConnectorConfig extends AbstractConfig {
   }
 
   public static final ConfigDef config = baseConfigDef();
-
   /**
    * Transform process properties.
    *

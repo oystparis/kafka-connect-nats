@@ -24,6 +24,7 @@ import io.nats.client.Nats;
 import org.apache.kafka.common.utils.AppInfoParser;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.Struct;
+import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
@@ -57,7 +58,7 @@ public class NatsSourceTask extends SourceTask {
     try {
       if (nhost.length == 1)
         this.nc = Nats.connect(nhost[0]);
-      else{
+      else if (nhost.length >= 2){
         ConnectionFactory cf = new ConnectionFactory();
         cf.setServers(nhost);
         cf.setMaxReconnect(5);
@@ -65,9 +66,12 @@ public class NatsSourceTask extends SourceTask {
         cf.setNoRandomize(true);
         this.nc = cf.createConnection();
       }
+      else
+        throw new ConnectException("No NATS URL");
       LOG.info("Connected to the next NATS URL(master) : " + this.nc.getConnectedUrl());
     } catch (IOException e){
       LOG.error(e.getMessage(), e);
+      throw new ConnectException(e.getMessage(), e);
     }
 
     this.nc.subscribe(nsubject, nQueueGroup, message -> {
