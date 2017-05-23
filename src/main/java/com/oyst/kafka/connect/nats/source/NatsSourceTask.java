@@ -19,6 +19,7 @@
 package com.oyst.kafka.connect.nats.source;
 
 import io.nats.client.Connection;
+import io.nats.client.ConnectionFactory;
 import io.nats.client.Nats;
 import org.apache.kafka.common.utils.AppInfoParser;
 import org.apache.kafka.connect.data.Schema;
@@ -44,14 +45,23 @@ public class NatsSourceTask extends SourceTask {
   public void start(Map<String, String> map) {
     LOG.info("Start the Nats Source Task");
     String nsubject = map.get(NatsSourceConnectorConstants.NATS_SUBJECT);
-    String nhost = map.get(NatsSourceConnectorConstants.NATS_HOST);
+    String[] nhost = map.get(NatsSourceConnectorConstants.NATS_URL).split(",");
     String nQueueGroup = map.get(NatsSourceConnectorConstants.NATS_QUEUE_GROUP);
     this.ktopic = map.get(NatsSourceConnectorConstants.KAFKA_TOPIC);
     try {
-      this.nc = Nats.connect(nhost);
-      LOG.info("Connected to the next NATS URL : " + this.nc.getConnectedUrl());
+      if (nhost.length == 1)
+        this.nc = Nats.connect(nhost[0]);
+      else{
+        ConnectionFactory cf = new ConnectionFactory();
+        cf.setServers(nhost);
+        cf.setMaxReconnect(5);
+        cf.setReconnectWait(2000);
+        cf.setNoRandomize(true);
+        this.nc = cf.createConnection();
+      }
+      LOG.info("Connected to the next NATS URL(master) : " + this.nc.getConnectedUrl());
     } catch (IOException e){
-      e.printStackTrace();
+      LOG.error(e.getMessage(), e);
     }
 
     this.nc.subscribe(nsubject, nQueueGroup, message -> {
