@@ -36,6 +36,11 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_SUBJECT;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_URL;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_QUEUE_GROUP;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.KAFKA_TOPIC;
+
 public class NatsSourceTask extends SourceTask {
   private static final Logger LOG = LoggerFactory.getLogger(NatsSourceTask.class);
   private Connection nc;
@@ -45,10 +50,10 @@ public class NatsSourceTask extends SourceTask {
   @Override
   public void start(Map<String, String> map) {
     LOG.info("Start the Nats Source Task");
-    String nsubject = map.get(NatsSourceConnectorConstants.NATS_SUBJECT);
-    String[] nhost = map.get(NatsSourceConnectorConstants.NATS_URL).split(",");
-    String nQueueGroup = map.get(NatsSourceConnectorConstants.NATS_QUEUE_GROUP);
-    this.ktopic = map.get(NatsSourceConnectorConstants.KAFKA_TOPIC);
+    String nsubject = map.get(NATS_SUBJECT);
+    String[] nhost = map.get(NATS_URL).split(",");
+    String nQueueGroup = map.get(NATS_QUEUE_GROUP);
+    this.ktopic = map.get(KAFKA_TOPIC);
     try {
       if (nhost.length == 1)
         this.nc = Nats.connect(nhost[0]);

@@ -28,6 +28,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.KAFKA_TOPIC;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_QUEUE_GROUP;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_URL;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_SUBJECT;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.KAFKA_TOPIC_DOC;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_QUEUE_GROUP_DOC;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_SUBJECT_DOC;
+import static com.oyst.kafka.connect.nats.source.NatsSourceConnectorConstants.NATS_URL_DOC;
 
 public class NatsSourceConnectorConfig extends AbstractConfig {
   private static final Logger LOG = LoggerFactory.getLogger(NatsSourceConnector.class);
@@ -37,14 +45,14 @@ public class NatsSourceConnectorConfig extends AbstractConfig {
    */
   public static ConfigDef baseConfigDef() {
     return new ConfigDef()
-            .define(NatsSourceConnectorConstants.KAFKA_TOPIC, Type.STRING, "nats",
-                    Importance.LOW, NatsSourceConnectorConstants.KAFKA_TOPIC_DOC)
-            .define(NatsSourceConnectorConstants.NATS_SUBJECT, Type.STRING, null,
-                    Importance.MEDIUM, NatsSourceConnectorConstants.NATS_SUBJECT_DOC)
-            .define(NatsSourceConnectorConstants.NATS_QUEUE_GROUP, Type.STRING, "nats-kafka",
-                    Importance.LOW, NatsSourceConnectorConstants.NATS_QUEUE_GROUP_DOC)
-            .define(NatsSourceConnectorConstants.NATS_URL, Type.STRING, "nats://localhost:4222",
-                    Importance.HIGH, NatsSourceConnectorConstants.NATS_URL_DOC);
+            .define(KAFKA_TOPIC, Type.STRING, "nats",
+                    Importance.LOW, KAFKA_TOPIC_DOC)
+            .define(NATS_SUBJECT, Type.STRING, null,
+                    Importance.MEDIUM, NATS_SUBJECT_DOC)
+            .define(NATS_QUEUE_GROUP, Type.STRING, "nats-kafka",
+                    Importance.LOW, NATS_QUEUE_GROUP_DOC)
+            .define(NATS_URL, Type.STRING, "nats://localhost:4222",
+                    Importance.HIGH, NATS_URL_DOC);
   }
 
   public static final ConfigDef config = baseConfigDef();
