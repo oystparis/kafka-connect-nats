@@ -28,6 +28,7 @@ public class NatsSourceConnectorTest {
     sourceProperties.put("topic", "nats");
     sourceProperties.put("nats.subject", "POST");
     sourceProperties.put("nats.host", "nats://localhost:4222");
+    sourceProperties.put("nats.queue.group", "nats-queue");
     return sourceProperties;
   }
 
@@ -40,6 +41,7 @@ public class NatsSourceConnectorTest {
     Assert.assertEquals("nats", taskConfigs.get(0).get("topic"));
     Assert.assertEquals("POST", taskConfigs.get(0).get("nats.subject"));
     Assert.assertEquals("nats://localhost:4222", taskConfigs.get(0).get("nats.host"));
+    Assert.assertEquals("nats-queue", taskConfigs.get(0).get("nats.queue.group"));
     PowerMock.verifyAll();
   }
 
@@ -52,10 +54,12 @@ public class NatsSourceConnectorTest {
     Assert.assertEquals("nats", taskConfigs.get(0).get("topic"));
     Assert.assertEquals("POST", taskConfigs.get(0).get("nats.subject"));
     Assert.assertEquals("nats://localhost:4222", taskConfigs.get(0).get("nats.host"));
+    Assert.assertEquals("nats-queue", taskConfigs.get(0).get("nats.queue.group"));
 
     Assert.assertEquals("nats", taskConfigs.get(1).get("topic"));
     Assert.assertEquals("POST", taskConfigs.get(1).get("nats.subject"));
     Assert.assertEquals("nats://localhost:4222", taskConfigs.get(1).get("nats.host"));
+    Assert.assertEquals("nats-queue", taskConfigs.get(1).get("nats.queue.group"));
     PowerMock.verifyAll();
   }
 
