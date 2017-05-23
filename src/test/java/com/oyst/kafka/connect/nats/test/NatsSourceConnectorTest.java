@@ -27,7 +27,7 @@ public class NatsSourceConnectorTest {
     final Map<String, String> sourceProperties = new HashMap<>();
     sourceProperties.put("topic", "nats");
     sourceProperties.put("nats.subject", "POST");
-    sourceProperties.put("nats.host", "nats://localhost:4222");
+    sourceProperties.put("nats.url", "nats://localhost:4222");
     sourceProperties.put("nats.queue.group", "nats-queue");
     return sourceProperties;
   }
@@ -40,11 +40,29 @@ public class NatsSourceConnectorTest {
     Assert.assertEquals(1, taskConfigs.size());
     Assert.assertEquals("nats", taskConfigs.get(0).get("topic"));
     Assert.assertEquals("POST", taskConfigs.get(0).get("nats.subject"));
-    Assert.assertEquals("nats://localhost:4222", taskConfigs.get(0).get("nats.host"));
+    Assert.assertEquals("nats://localhost:4222", taskConfigs.get(0).get("nats.url"));
     Assert.assertEquals("nats-queue", taskConfigs.get(0).get("nats.queue.group"));
     PowerMock.verifyAll();
   }
 
+  @Test
+  public void testMultipleHost(){
+    PowerMock.replayAll();
+    final Map<String, String> sourceProperties = new HashMap<>();
+    sourceProperties.put("topic", "nats");
+    sourceProperties.put("nats.subject", "POST");
+    sourceProperties.put("nats.url", "nats://localhost:4222,localhost:4223");
+    sourceProperties.put("nats.queue.group", "nats-queue");
+
+    connector.start(sourceProperties);
+    List<Map<String, String>> taskConfigs = connector.taskConfigs(1);
+    Assert.assertEquals(1, taskConfigs.size());
+    Assert.assertEquals("nats", taskConfigs.get(0).get("topic"));
+    Assert.assertEquals("POST", taskConfigs.get(0).get("nats.subject"));
+    Assert.assertEquals("nats://localhost:4222,localhost:4223", taskConfigs.get(0).get("nats.url"));
+    Assert.assertEquals("nats-queue", taskConfigs.get(0).get("nats.queue.group"));
+    PowerMock.verifyAll();
+  }
   @Test
   public void testMultipleTasks() {
     PowerMock.replayAll();
@@ -53,12 +71,12 @@ public class NatsSourceConnectorTest {
     Assert.assertEquals(2, taskConfigs.size());
     Assert.assertEquals("nats", taskConfigs.get(0).get("topic"));
     Assert.assertEquals("POST", taskConfigs.get(0).get("nats.subject"));
-    Assert.assertEquals("nats://localhost:4222", taskConfigs.get(0).get("nats.host"));
+    Assert.assertEquals("nats://localhost:4222", taskConfigs.get(0).get("nats.url"));
     Assert.assertEquals("nats-queue", taskConfigs.get(0).get("nats.queue.group"));
 
     Assert.assertEquals("nats", taskConfigs.get(1).get("topic"));
     Assert.assertEquals("POST", taskConfigs.get(1).get("nats.subject"));
-    Assert.assertEquals("nats://localhost:4222", taskConfigs.get(1).get("nats.host"));
+    Assert.assertEquals("nats://localhost:4222", taskConfigs.get(1).get("nats.url"));
     Assert.assertEquals("nats-queue", taskConfigs.get(1).get("nats.queue.group"));
     PowerMock.verifyAll();
   }

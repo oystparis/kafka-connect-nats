@@ -18,14 +18,18 @@ connector.class=com.oyst.kafka.connect.nats.NatsSourceConnector
 tasks.max=1
 topic=NATS-TOPIC
 nats.subject=NATS-SUBJECT
-nats.host=nats://localhost:4222
+nats.url=nats://localhost:4222
 nats.queue.group=nats-queue
 ```
 
+Since the 0.2 version, kafka-connect-nats manage the nats clustering, for example:
+```ini
+nats.url=nats://localhost:4222,localhost:4223
+```
 * **name**: Name of the connector
 * **connector.class**: Class of the implementation of the connector
 * **tasks.max**: Maximum number of tasks to create
 * **topic**: The destination Kafka's Topic Name
 * **nats.subject**: The name of NATS Subject
-* **nats.host**: URI of NATS server
+* **nats.url**: URI of NATS server(s)
 * **nats.queue.group**: Name of NATS Queue Group

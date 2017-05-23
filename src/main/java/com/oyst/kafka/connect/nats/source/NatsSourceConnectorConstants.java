@@ -22,11 +22,11 @@ public class NatsSourceConnectorConstants {
   // Connector Constants
   public static final String KAFKA_TOPIC = "topic";
   public static final String NATS_SUBJECT = "nats.subject";
-  public static final String NATS_HOST = "nats.host";
+  public static final String NATS_URL = "nats.url";
   public static final String NATS_QUEUE_GROUP = "nats.queue.group";
   // Connector Constants Docs
   public static final String KAFKA_TOPIC_DOC = "Kafka topic to put received data";
   public static final String NATS_SUBJECT_DOC = "The NATS SUBJECT";
-  public static final String NATS_HOST_DOC = "THE NATS HOST";
+  public static final String NATS_URL_DOC = "THE NATS HOST";
   public static final String NATS_QUEUE_GROUP_DOC = "The NATS Queue Group";
 }
