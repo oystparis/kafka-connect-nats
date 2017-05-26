@@ -75,13 +75,10 @@ public class NatsSinkTask extends SinkTask {
       SinkRecord sinkRecord = records.get(i);
 
       StringConverter stringConverter = new StringConverter();
-      String key = new String(stringConverter.fromConnectData(sinkRecord.topic(),
-              sinkRecord.keySchema(), sinkRecord.key()));
       byte[] value = stringConverter.fromConnectData(sinkRecord.topic(),
               sinkRecord.valueSchema(), sinkRecord.value());
       try {
-        LOG.info("publishing next key : {}", key);
-        LOG.info("publishing next value : {}", value);
+        LOG.info("Publishing next message : {}", new String(value));
         this.nc.publish(this.subject, value);
       } catch (IOException e){
         LOG.error(e.getMessage(), e);

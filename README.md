@@ -43,7 +43,7 @@ Each Key of Kafka's message as considered as a NATS subject and each value as NA
 name=nats_sink
 connector.class=com.oyst.kafka.connect.nats.NatsSinkConnector
 tasks.max=1
-topic=KAFKA-TOPIC
+topics=KAFKA-TOPIC
 nats.url=nats://localhost:4222
 nats.subject=FROM-KAFKA
 ```
