@@ -26,7 +26,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-import static com.oyst.kafka.connect.nats.sink.NatsSinkConnectorConstants.*;
+import static com.oyst.kafka.connect.nats.sink.NatsSinkConnectorConstants.NATS_SUBJECT;
+import static com.oyst.kafka.connect.nats.sink.NatsSinkConnectorConstants.NATS_SUBJECT_DOC;
+import static com.oyst.kafka.connect.nats.sink.NatsSinkConnectorConstants.NATS_URL;
+import static com.oyst.kafka.connect.nats.sink.NatsSinkConnectorConstants.NATS_URL_DOC;
 
 public class NatsSinkConnectorConfig extends AbstractConfig {
 
