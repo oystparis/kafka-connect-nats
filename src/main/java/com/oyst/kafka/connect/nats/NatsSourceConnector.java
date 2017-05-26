@@ -44,7 +44,6 @@ public class NatsSourceConnector extends SourceConnector {
   public void start(Map<String, String> props) {
     LOG.info("Start the NATS Source Connector with the next properties : {}", props);
     this.mConfigProperties = props;
-
   }
 
   @Override

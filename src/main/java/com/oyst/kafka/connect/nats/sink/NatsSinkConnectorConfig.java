@@ -59,7 +59,7 @@ public class NatsSinkConnectorConfig extends AbstractConfig {
   }
 
   public static void main(String[] args) {
-    System.out.println(config.toRst());
+    System.out.println(config.toEnrichedRst());
   }
 
 }
