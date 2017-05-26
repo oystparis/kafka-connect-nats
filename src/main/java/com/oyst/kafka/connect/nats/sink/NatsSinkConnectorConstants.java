@@ -20,5 +20,7 @@ package com.oyst.kafka.connect.nats.sink;
 
 public class NatsSinkConnectorConstants {
   public static final String NATS_URL = "nats.url";
-  public static final String NATS_URL_DOC = "nats.url";
+  public static final String NATS_SUBJECT = "nats.subject";
+  public static final String NATS_URL_DOC = "The nats URL";
+  public static final String NATS_SUBJECT_DOC = "The NATS destination subject";
 }

@@ -45,6 +45,7 @@ connector.class=com.oyst.kafka.connect.nats.NatsSinkConnector
 tasks.max=1
 topic=KAFKA-TOPIC
 nats.url=nats://localhost:4222
+nats.subject=FROM-KAFKA
 ```
 
 * **name**: Name of the connector
@@ -52,3 +53,4 @@ nats.url=nats://localhost:4222
 * **tasks.max**: Maximum number of tasks to create
 * **topic**: The Kafka's Topic to Consume
 * **nats.url**: URI of NATS server(s)
+* **nats.subject**: The name of NATS Subject

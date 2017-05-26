@@ -20,8 +20,6 @@ package com.oyst.kafka.connect.nats.sink;
 import io.nats.client.Connection;
 import io.nats.client.ConnectionFactory;
 import io.nats.client.Nats;
-import org.apache.kafka.clients.consumer.OffsetAndMetadata;
-import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.utils.AppInfoParser;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.apache.kafka.connect.sink.SinkTask;
@@ -35,17 +33,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static com.oyst.kafka.connect.nats.sink.NatsSinkConnectorConstants.NATS_SUBJECT;
 import static com.oyst.kafka.connect.nats.sink.NatsSinkConnectorConstants.NATS_URL;
 
 public class NatsSinkTask extends SinkTask {
   private static final Logger LOG = LoggerFactory.getLogger(NatsSinkTask.class);
   private Connection nc;
+  private String subject;
 
   @Override
   public void start(Map<String, String> map) {
     LOG.info("Start the Nats Sink Task");
     String[] nhost = map.get(NATS_URL).split(",");
-
+    this.subject = map.get(NATS_SUBJECT);
     try {
       if (nhost.length == 1)
         this.nc = Nats.connect(nhost[0]);
@@ -80,17 +80,15 @@ public class NatsSinkTask extends SinkTask {
       byte[] value = stringConverter.fromConnectData(sinkRecord.topic(),
               sinkRecord.valueSchema(), sinkRecord.value());
       try {
-        this.nc.publish(key, value);
+        LOG.info("publishing next key : {}", key);
+        LOG.info("publishing next value : {}", value);
+        this.nc.publish(this.subject, value);
       } catch (IOException e){
         LOG.error(e.getMessage(), e);
       }
     }
   }
 
-  @Override
-  public void flush(Map<TopicPartition, OffsetAndMetadata> map) {
-    // todo
-  }
 
   @Override
   public String version() {
