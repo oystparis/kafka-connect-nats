@@ -6,7 +6,7 @@
 
     <groupId>com.oyst</groupId>
     <artifactId>kafka-connect-nats</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,6 +20,7 @@
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
             <version>0.10.2.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.nats</groupId>
@@ -35,6 +36,7 @@
             <groupId>org.apache.kafka</groupId>
             <artifactId>connect-api</artifactId>
             <version>0.10.2.0</version>
+            <scope>provided</scope>
         </dependency>
         <!-- scope test -->
         <dependency>
